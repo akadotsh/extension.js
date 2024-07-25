@@ -6,6 +6,7 @@
 // ╚═════╝ ╚══════╝  ╚═══╝  ╚══════╝╚══════╝ ╚═════╝ ╚═╝
 
 import {babelConfig} from '../options/babel'
+import {isUsingSvelte} from '../options/svelte'
 import {isUsingTypeScript} from '../options/typescript'
 import {isUsingVue} from '../options/vue'
 
@@ -34,6 +35,17 @@ const vueLoaders = (projectDir: string): Loader[] => {
   return vueLoaders
 }
 
+const svelteLoaders = (projectDir: string): Loader[] => {
+  const svelteLoader: Loader[] = [
+    {
+      test: /\.svelte$/,
+      loader: require.resolve('svelte-loader')
+    }
+  ]
+
+  return svelteLoader
+}
+
 export default function jsLoaders(projectDir: string, opts: any) {
   // Prevent users from running ts/tsx files when not using TypeScript
   const files = isUsingTypeScript(projectDir)
@@ -56,7 +68,11 @@ export default function jsLoaders(projectDir: string, opts: any) {
   ]
 
   // Add vue-loader when using vue
-  isUsingVue(projectDir) && jsLoaders.push(...vueLoaders(projectDir))
+  // isUsingVue(projectDir) ||
+  //   (isUsingSvelte(projectDir) &&
+  //     jsLoaders.push(...vueLoaders(projectDir), ...svelteLoaders(projectDir)))
+
+  isUsingSvelte(projectDir) && jsLoaders.push(...svelteLoaders(projectDir))
 
   return jsLoaders
 }

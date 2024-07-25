@@ -12,6 +12,7 @@ import {getOverlay, getPublicFolderPath} from './config/userOptions'
 import {isUsingReact} from './options/react'
 import {isUsingVue} from './options/vue'
 import {isUsingPreact} from './options/preact'
+import {isUsingSvelte} from './options/svelte'
 
 export default function devServerConfig(
   projectPath: string,
@@ -32,7 +33,8 @@ export default function devServerConfig(
     watchFiles:
       isUsingReact(projectPath) ||
       isUsingVue(projectPath) ||
-      isUsingPreact(projectPath)
+      isUsingPreact(projectPath) ||
+      isUsingSvelte(projectPath)
         ? undefined
         : [path.join(projectPath, '**/*.html')],
     client: {
