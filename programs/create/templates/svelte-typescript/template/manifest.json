@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "version": "1.0",
+  "name": "Svelte Typescript Template",
+  "description": "An Extension.js template using Svelte. This template includes a new tab override.",
+  "icons": {
+    "16": "images/icons/icon_16.png",
+    "48": "images/icons/icon_48.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://extension.js.org/*"],
+      "js": ["./newtab/script.ts"]
+    }
+  ],
+  "chrome_url_overrides": {
+    "newtab": "newtab/index.html"
+  }
+}

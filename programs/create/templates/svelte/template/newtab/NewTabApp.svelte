@@ -2,8 +2,6 @@
   import 'sakura.css'
   import './styles.css'
   import svelteLogo from '../images/svelte.png'
-
-  console.log('Hello')
 </script>
 
 <header>

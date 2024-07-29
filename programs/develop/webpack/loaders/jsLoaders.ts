@@ -5,6 +5,7 @@
 // ██████╔╝███████╗ ╚████╔╝ ███████╗███████╗╚██████╔╝██║
 // ╚═════╝ ╚══════╝  ╚═══╝  ╚══════╝╚══════╝ ╚═════╝ ╚═╝
 
+import {sveltePreprocess} from 'svelte-preprocess'
 import {babelConfig} from '../options/babel'
 import {isUsingSvelte} from '../options/svelte'
 import {isUsingTypeScript} from '../options/typescript'
@@ -36,14 +37,28 @@ const vueLoaders = (projectDir: string): Loader[] => {
 }
 
 const svelteLoaders = (projectDir: string): Loader[] => {
-  const svelteLoader: Loader[] = [
+  const svelteLoaders: Loader[] = [
     {
       test: /\.svelte$/,
-      loader: require.resolve('svelte-loader')
+      loader: require.resolve('svelte-loader'),
+      options: {
+        preprocess: require('svelte-preprocess')()
+      }
     }
   ]
 
-  return svelteLoader
+  if (isUsingTypeScript(projectDir)) {
+    svelteLoaders.push({
+      test: /\.ts$/,
+      loader: require.resolve('ts-loader'),
+      options: {
+        appendTsSuffixTo: [/\.svelte$/],
+        transpileOnly: true
+      }
+    })
+  }
+
+  return svelteLoaders
 }
 
 export default function jsLoaders(projectDir: string, opts: any) {
